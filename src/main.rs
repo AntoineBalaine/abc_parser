@@ -14,5 +14,6 @@ struct Args {
 fn main() {
     let args = Args::parse();
     let content = std::fs::read_to_string(&args.path).expect("could not read file");
-    abc_parse::abc_parse(content);
+    let myresult = abc_parse::abc_parser(&content[..]);
+    println!("{:?}", myresult)
 }
