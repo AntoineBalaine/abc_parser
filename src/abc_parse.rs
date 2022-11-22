@@ -1,3 +1,4 @@
+use pest::iterators::Pair;
 use pest::{error::Error, Parser};
 
 #[derive(Parser, Debug)]
@@ -15,11 +16,14 @@ pub fn abc_parser(song: &str) -> Result<AbcValue, Error<Rule>> {
         .expect("couldn't create the parser")
         .next()
         .unwrap();
-    use pest::iterators::Pair;
 
     fn parse_value(pair: Pair<Rule>) -> AbcValue {
         match pair.as_rule() {
             Rule::TEXTLINE => {
+                let span = pair.clone().as_span();
+                let start = span.start_pos().line_col();
+                let end = span.end_pos().line_col();
+                let startline = start.0;
                 let val: Vec<AbcValue> =
                     pair.into_inner().map(|value| parse_value(value)).collect();
                 AbcValue::TEXTLINE(val)
