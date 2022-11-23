@@ -12,18 +12,6 @@ pub enum AbcValue<'a> {
     TEXT(&'a str),
 }
 
-pub enum AbcFileStructureMembers {
-    FileHeader(String),
-    Tune(String),
-}
-
-pub enum FileHeaderMembers<'a> {
-    header_info_line(&'a str),
-    style_sheet_directive(&'a str),
-    COMMENTLINE(COMMENTLINE<'a>),
-}
-type COMMENTLINE<'a> = &'a str;
-
 fn parse_value(pair: Pair<Rule>) -> AbcValue {
     Token::from(pair).kind
 }
