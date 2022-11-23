@@ -25,25 +25,48 @@ mod ast {
         span.as_str()
     }
 
-    #[derive(Debug, FromPest)]
+    /*     #[derive(Debug, FromPest)]
     #[pest_ast(rule(Rule::field))]
     pub struct Field {
         #[pest_ast(outer(with(span_into_str), with(str::parse), with(Result::unwrap)))]
         pub value: f64,
+    } */
+
+    #[derive(Debug, FromPest)]
+    #[pest_ast(rule(Rule::octave))]
+    pub struct Octave<'a> {
+        #[pest_ast(outer(with(span_into_str)))]
+        pub value: &'a str,
     }
 
     #[derive(Debug, FromPest)]
+    #[pest_ast(rule(Rule::alteration))]
+    pub struct Alteration<'a> {
+        #[pest_ast(outer(with(span_into_str)))]
+        pub value: &'a str,
+    }
+
+    #[derive(Debug, FromPest)]
+    #[pest_ast(rule(Rule::note_letter))]
+    pub struct NoteLetter<'a> {
+        #[pest_ast(outer(with(span_into_str)))]
+        pub value: &'a str,
+    }
+
+    #[derive(Debug, FromPest)]
+    #[pest_ast(rule(Rule::pitch))]
+    pub struct Pitch<'a> {
+        pub alteration: Option<Alteration<'a>>,
+        pub note_letter: NoteLetter<'a>,
+        pub octave: Option<Octave<'a>>,
+        eoi: EOI,
+    }
+
+    /*     #[derive(Debug, FromPest)]
     #[pest_ast(rule(Rule::record))]
     pub struct Record {
         pub fields: Vec<Field>,
-    }
-
-    #[derive(Debug, FromPest)]
-    #[pest_ast(rule(Rule::file))]
-    pub struct File {
-        pub records: Vec<Record>,
-        eoi: EOI,
-    }
+    } */
 
     #[derive(Debug, FromPest)]
     #[pest_ast(rule(Rule::EOI))]
@@ -65,30 +88,17 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let myresult = abc_parse::abc_parser(&content[..]);
     println!("{:?}", myresult); */
 
-    use ast::File;
+    use ast::Pitch;
     use from_pest::FromPest;
     use pest::Parser;
     use std::fs;
 
-    let source = String::from_utf8(fs::read("./example_tunes/examplecsv.csv")?)?;
-    let mut parse_tree = csv::Parser::parse(csv::Rule::file, &source)?;
+    let source = String::from_utf8(fs::read("./example_tunes/wipABC.abc")?)?;
+    let mut parse_tree = csv::Parser::parse(csv::Rule::pitch, &source)?;
     println!("parse tree = {:#?}", parse_tree);
-    let syntax_tree: File = File::from_pest(&mut parse_tree).expect("infallible");
+    let syntax_tree: Pitch = Pitch::from_pest(&mut parse_tree).expect("infallible");
     println!("syntax tree = {:#?}", syntax_tree);
     println!();
-
-    let mut field_sum = 0.0;
-    let mut record_count = 0;
-
-    for record in syntax_tree.records {
-        record_count += 1;
-        for field in record.fields {
-            field_sum += field.value;
-        }
-    }
-
-    println!("Sum of fields: {}", field_sum);
-    println!("Number of records: {}", record_count);
 
     Ok(())
 }

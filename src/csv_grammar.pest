@@ -1,3 +1,5 @@
-field = { (ASCII_DIGIT | "." | "-")+ }
-record = { field ~ ("," ~ field)* }
-file = { SOI ~ (record ~ ("\r\n" | "\n"))* ~ EOI }
+
+note_letter = { ('a'..'g') | 'A'..'G' }
+octave = { ( "'" | ",")+ }
+alteration = { "="| "_" | "^" |"^^" |"__"|"♭"| "♮"| "♯"|"𝄫"| "𝄪"}
+pitch = ${ SOI ~ alteration? ~ note_letter ~ octave? ~ EOI }
