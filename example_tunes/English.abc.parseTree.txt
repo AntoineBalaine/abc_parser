@@ -1,0 +1,719 @@
+- file_structure
+  - file_header
+    - file_header_info_line > abc_version: "%abc-2.1"
+    - file_header_info_line > history > TEXT: "This file contains some example English tunes"
+    - COMMENTLINE > TEXTLINE > TEXT: "note that the comments (like this one) are to highlight usages"
+    - COMMENTLINE > TEXTLINE > TEXT: "and would not normally be included in such detail"
+    - file_header_info_line
+      - origin > TEXT: "England"
+      - COMMENTLINE > TEXTLINE > TEXT: "the origin of all tunes is England"
+  - tune
+    - tune_header
+      - reference_number: "X:1                   "
+      - COMMENTLINE > TEXTLINE > TEXT: "tune no 1"
+      - tune_header_info_line
+        - tune_title > TEXT: "Dusty Miller, The"
+        - COMMENTLINE > TEXTLINE > TEXT: "title"
+      - tune_header_info_line
+        - tune_title > TEXT: "Binny\'s Jig"
+        - COMMENTLINE > TEXTLINE > TEXT: "an alternative title"
+      - tune_header_info_line
+        - composer > TEXT: "Trad."
+        - COMMENTLINE > TEXTLINE > TEXT: "traditional"
+      - tune_header_info_line
+        - rhythm_line > TEXT: "DH"
+        - COMMENTLINE > TEXTLINE > TEXT: "double hornpipe"
+      - tune_header_info_line
+        - meter > TEXT: "3/4"
+        - COMMENTLINE > TEXTLINE > TEXT: "meter"
+      - tune_header_info_line
+        - key > TEXT: "G"
+        - COMMENTLINE > TEXTLINE > TEXT: "key"
+    - tune_body
+      - MUSIC_CODE
+        - bar
+          - music_content > beam
+            - nte_or_chrd > note_cstrct > note
+              - pitch > note_letter: "B"
+              - rhythm > rhythm_broken: ">"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "c"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "d"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "B"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "A"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+          - generic_bar_line > bar_line: "|"
+        - bar
+          - music_content > beam
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "F"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "A"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "A"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "c"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "B"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "A"
+          - generic_bar_line > bar_line: "|"
+        - bar
+          - music_content > beam
+            - nte_or_chrd > note_cstrct > note
+              - pitch > note_letter: "B"
+              - rhythm > rhythm_broken: ">"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "c"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "d"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "B"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "A"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+          - generic_bar_line > bar_line: "|"
+        - bar
+          - music_content > beam
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "D"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "B"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "A"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+          - generic_bar_line > end_of_repeated_section: ":|"
+      - MUSIC_CODE
+        - bar
+          - music_content > beam
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "B"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "d"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "d"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "g"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "f"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "g"
+          - generic_bar_line > bar_line: "|"
+        - bar
+          - music_content > beam
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "a"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "A"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "A"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "c"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "B"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "A"
+          - generic_bar_line > bar_line: "|"
+        - bar
+          - music_content > beam
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "B"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "d"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "d"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "g"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "f"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "a"
+          - generic_bar_line > bar_line: "|"
+        - bar
+          - music_content > beam
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "g"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "B"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "A"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+          - generic_bar_line > end_of_repeated_section: ":|"
+      - MUSIC_CODE
+        - bar
+          - music_content > beam
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "B"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+            - nte_or_chrd > note_cstrct > note
+              - pitch > note_letter: "G"
+              - rhythm > rhythm_digit_slash: "/2"
+            - nte_or_chrd > note_cstrct > note
+              - pitch > note_letter: "G"
+              - rhythm > rhythm_digit_slash: "/2"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "B"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+          - generic_bar_line > bar_line: "|"
+        - bar
+          - music_content > beam
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "F"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "A"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "A"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "c"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "B"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "A"
+          - generic_bar_line > bar_line: "|"
+        - bar
+          - music_content > beam
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "B"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+            - nte_or_chrd > note_cstrct > note
+              - pitch > note_letter: "G"
+              - rhythm > rhythm_digit_slash: "/2"
+            - nte_or_chrd > note_cstrct > note
+              - pitch > note_letter: "G"
+              - rhythm > rhythm_digit_slash: "/2"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "B"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+          - generic_bar_line > bar_line: "|"
+        - bar
+          - music_content > beam
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "D"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "B"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "A"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+          - generic_bar_line > end_of_repeated_section: ":|"
+    - lyric_section
+      - lyric_line > words_postbody > TEXT: "Hey, the dusty miller, and his dusty coat;"
+      - lyric_line > words_postbody > TEXT: "He will win a shilling, or he spend a groat."
+      - lyric_line > words_postbody > TEXT: "Dusty was the coat, dusty was the colour;"
+      - lyric_line > words_postbody > TEXT: "Dusty was the kiss, that I got frae the miller."
+  - tune
+    - tune_header
+      - reference_number: "X:2"
+      - tune_header_info_line > tune_title > TEXT: "Old Sir Simon the King"
+      - tune_header_info_line > composer > TEXT: "Trad."
+      - tune_header_info_line
+        - source > TEXT: "Offord MSS"
+        - COMMENTLINE > TEXTLINE > TEXT: "from Offord manuscript"
+      - tune_header_info_line
+        - notes > TEXT: "see also Playford"
+        - COMMENTLINE > TEXTLINE > TEXT: "reference note"
+      - tune_header_info_line > meter > TEXT: "9/8"
+      - tune_header_info_line
+        - rhythm_line > TEXT: "SJ"
+        - COMMENTLINE > TEXTLINE > TEXT: "slip jig"
+      - tune_header_info_line
+        - notes > TEXT: "originally in C"
+        - COMMENTLINE > TEXTLINE > TEXT: "transcription note"
+      - tune_header_info_line > key > TEXT: "G"
+    - tune_body
+      - MUSIC_CODE
+        - bar
+          - music_content > nte_or_chrd > note_cstrct > note > pitch > note_letter: "D"
+          - generic_bar_line > bar_line: "|"
+        - bar
+          - music_content > beam
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "F"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "A"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+            - nte_or_chrd > note_cstrct > note
+              - pitch > note_letter: "G"
+              - rhythm: "2"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "D"
+          - generic_bar_line > bar_line: "|"
+        - bar
+          - music_content > beam
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "F"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "A"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+            - nte_or_chrd > note_cstrct > note
+              - pitch > note_letter: "F"
+              - rhythm: "2"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "D"
+          - generic_bar_line > bar_line: "|"
+        - bar
+          - music_content > beam
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "E"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "F"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "E"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "E"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "F"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "E"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "E"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "F"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+          - generic_bar_line > bar_line: "|"
+        - bar
+          - music_content > beam
+            - nte_or_chrd > note_cstrct > note
+              - pitch > note_letter: "A"
+              - rhythm: "2"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+            - nte_or_chrd > note_cstrct > note
+              - pitch > note_letter: "F"
+              - rhythm: "2"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "E"
+            - nte_or_chrd > note_cstrct > note
+              - pitch > note_letter: "D"
+              - rhythm: "2"
+          - generic_bar_line > end_of_repeated_section: ":|"
+      - MUSIC_CODE
+        - bar
+          - music_content > nte_or_chrd > note_cstrct > note > pitch > note_letter: "D"
+          - generic_bar_line > bar_line: "|"
+        - bar
+          - music_content > beam
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "A"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "A"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "B"
+            - nte_or_chrd > note_cstrct > note
+              - pitch > note_letter: "d"
+              - rhythm: "2"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "D"
+          - generic_bar_line > bar_line: "|"
+        - bar
+          - music_content > beam
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "A"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "A"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "B"
+            - nte_or_chrd > note_cstrct > note
+              - pitch > note_letter: "c"
+              - rhythm: "2"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "D"
+          - generic_bar_line > bar_line: "|"
+        - bar
+          - music_content > Nth_ending
+            - nth_ending_number: "[1"
+            - music_content > beam
+              - nte_or_chrd > note_cstrct > note > pitch > note_letter: "E"
+              - nte_or_chrd > note_cstrct > note > pitch > note_letter: "F"
+              - nte_or_chrd > note_cstrct > note > pitch > note_letter: "E"
+              - nte_or_chrd > note_cstrct > note > pitch > note_letter: "E"
+              - nte_or_chrd > note_cstrct > note > pitch > note_letter: "F"
+              - nte_or_chrd > note_cstrct > note > pitch > note_letter: "E"
+              - nte_or_chrd > note_cstrct > note > pitch > note_letter: "E"
+              - nte_or_chrd > note_cstrct > note > pitch > note_letter: "F"
+              - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+            - bar_line: "|"
+          - music_content > beam
+            - nte_or_chrd > note_cstrct > note
+              - pitch > note_letter: "A"
+              - rhythm: "2"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+            - nte_or_chrd > note_cstrct > note
+              - pitch > note_letter: "F"
+              - rhythm: "2"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "E"
+            - nte_or_chrd > note_cstrct > note
+              - pitch > note_letter: "D"
+              - rhythm: "2"
+          - generic_bar_line > end_of_repeated_section: ":|"
+        - COMMENTLINE > TEXTLINE > TEXT: "no line-break in score"
+      - body_info_line
+        - meter > TEXT: "12/8"
+        - COMMENTLINE > TEXTLINE > TEXT: "change of meter"
+      - MUSIC_CODE
+        - music_content > Nth_ending
+          - nth_ending_number: "[2"
+          - music_content > beam
+            - nte_or_chrd > note_cstrct > note
+              - pitch > note_letter: "E"
+              - rhythm: "2"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "E"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "E"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "F"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "E"
+            - nte_or_chrd > note_cstrct > note
+              - pitch > note_letter: "E"
+              - rhythm: "2"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "E"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "E"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "F"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+          - bar_line: "|"
+        - COMMENTLINE > TEXTLINE > TEXT: "no line-break in score"
+      - body_info_line
+        - meter > TEXT: "9/8"
+        - COMMENTLINE > TEXTLINE > TEXT: "change of meter"
+      - MUSIC_CODE > bar
+        - music_content > beam
+          - nte_or_chrd > note_cstrct > note
+            - pitch > note_letter: "A"
+            - rhythm: "2"
+          - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+          - nte_or_chrd > note_cstrct > note
+            - pitch > note_letter: "F"
+            - rhythm: "2"
+          - nte_or_chrd > note_cstrct > note > pitch > note_letter: "E"
+          - nte_or_chrd > note_cstrct > note
+            - pitch > note_letter: "D"
+            - rhythm: "2"
+        - generic_bar_line > close_thin_thick_double_bar_line: "|]"
+  - tune
+    - tune_header
+      - reference_number: "X:3"
+      - tune_header_info_line > tune_title > TEXT: "William and Nancy"
+      - tune_header_info_line > tune_title > TEXT: "New Mown Hay"
+      - tune_header_info_line > tune_title > TEXT: "Legacy, The"
+      - tune_header_info_line > composer > TEXT: "Trad."
+      - tune_header_info_line
+        - origin > TEXT: "England; Gloucs; Bledington"
+        - COMMENTLINE > TEXTLINE > TEXT: "place of origin"
+      - tune_header_info_line
+        - book > TEXT: "Sussex Tune Book"
+        - COMMENTLINE > TEXTLINE > TEXT: "can be found in these books"
+      - tune_header_info_line > book > TEXT: "Mally\'s Cotswold Morris vol.1 2"
+      - tune_header_info_line
+        - discography > TEXT: "Morris On"
+        - COMMENTLINE > TEXTLINE > TEXT: "can be heard on this record"
+      - tune_header_info_line
+        - parts_line > part_line_content
+          - sections_group > section_name: "AB"
+          - sections_group > section_name: "AC"
+          - section_name: "A"
+        - COMMENTLINE > TEXTLINE > TEXT: "play the parts in this order"
+      - tune_header_info_line > meter > TEXT: "6/8"
+      - tune_header_info_line > key > TEXT: "G"
+    - tune_body
+      - MUSIC_CODE
+        - bar
+          - music_content > body_inline_info > parts_line > part_line_content > section_name: "A"
+          - music_content > nte_or_chrd > note_cstrct > note > pitch > note_letter: "D"
+          - generic_bar_line > bar_line: "|"
+        - bar
+          - music_content > beam
+            - nte_or_chrd > note_cstrct
+              - chord_symbol > note_letter: "G"
+              - note
+                - pitch > note_letter: "G"
+                - rhythm: "2"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "B"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "d"
+          - generic_bar_line > bar_line: "|"
+        - bar
+          - music_content > beam
+            - nte_or_chrd > note_cstrct
+              - chord_symbol > note_letter: "C"
+              - note
+                - pitch > note_letter: "e"
+                - rhythm: "2"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "e"
+            - nte_or_chrd > note_cstrct
+              - chord_symbol > note_letter: "G"
+              - note > pitch > note_letter: "d"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "B"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+          - generic_bar_line > bar_line: "|"
+        - bar
+          - music_content > beam
+            - nte_or_chrd > note_cstrct
+              - chord_symbol
+                - note_letter: "D"
+                - chord_type: "7"
+              - note
+                - pitch > note_letter: "A"
+                - rhythm: "2"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "d"
+            - nte_or_chrd > note_cstrct
+              - chord_symbol > note_letter: "G"
+              - note > pitch > note_letter: "B"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "A"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+          - generic_bar_line > bar_line: "|"
+        - bar
+          - music_content > beam
+            - nte_or_chrd > note_cstrct
+              - chord_symbol > note_letter: "C"
+              - note
+                - pitch > note_letter: "E"
+                - rhythm: "2"
+            - nte_or_chrd > note_cstrct
+              - chord_symbol
+                - note_letter: "D"
+                - chord_type: "7"
+              - note > pitch > note_letter: "F"
+            - nte_or_chrd > note_cstrct
+              - chord_symbol > note_letter: "G"
+              - note
+                - pitch > note_letter: "G"
+                - rhythm: "2"
+          - generic_bar_line > end_of_repeated_section: ":|"
+      - MUSIC_CODE
+        - bar
+          - music_content > body_inline_info > parts_line > part_line_content > section_name: "B"
+          - music_content > nte_or_chrd > note_cstrct > note > pitch > note_letter: "d"
+          - generic_bar_line > bar_line: "|"
+        - bar
+          - music_content > beam
+            - nte_or_chrd > note_cstrct
+              - chord_symbol > note_letter: "G"
+              - note
+                - pitch > note_letter: "e"
+                - rhythm: "2"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "d"
+            - nte_or_chrd > note_cstrct > note
+              - pitch > note_letter: "B"
+              - rhythm: "2"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "d"
+          - generic_bar_line > bar_line: "|"
+        - bar
+          - music_content > beam
+            - nte_or_chrd > note_cstrct
+              - chord_symbol > note_letter: "C"
+              - note > pitch > note_letter: "g"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "f"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "e"
+            - nte_or_chrd > note_cstrct
+              - chord_symbol > note_letter: "G"
+              - note
+                - pitch > note_letter: "d"
+                - rhythm: "2"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "d"
+          - generic_bar_line > bar_line: "|"
+        - bar
+          - music_content > beam
+            - nte_or_chrd > note_cstrct
+              - chord_symbol > note_letter: "G"
+              - note
+                - pitch > note_letter: "e"
+                - rhythm: "2"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "d"
+            - nte_or_chrd > note_cstrct > note
+              - pitch > note_letter: "B"
+              - rhythm: "2"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "d"
+          - generic_bar_line > bar_line: "|"
+        - bar
+          - music_content > beam
+            - nte_or_chrd > note_cstrct
+              - chord_symbol > note_letter: "C"
+              - note > pitch > note_letter: "g"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "f"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "e"
+            - nte_or_chrd > note_cstrct
+              - chord_symbol
+                - note_letter: "D"
+                - chord_type: "7"
+              - note
+                - pitch > note_letter: "d"
+                - rhythm: "2"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "c"
+          - generic_bar_line > bar_line: "|"
+      - MUSIC_CODE
+        - bar
+          - music_content > beam
+            - nte_or_chrd > note_cstrct
+              - chord_symbol > note_letter: "G"
+              - note
+                - pitch > note_letter: "B"
+                - rhythm: "2"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "B"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "B"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "c"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "d"
+          - generic_bar_line > bar_line: "|"
+        - bar
+          - music_content > beam
+            - nte_or_chrd > note_cstrct
+              - chord_symbol > note_letter: "C"
+              - note
+                - pitch > note_letter: "e"
+                - rhythm: "2"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "e"
+            - nte_or_chrd > note_cstrct
+              - chord_symbol > note_letter: "G"
+              - note > pitch > note_letter: "d"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "B"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+          - generic_bar_line > bar_line: "|"
+        - bar
+          - music_content > beam
+            - nte_or_chrd > note_cstrct
+              - chord_symbol
+                - note_letter: "D"
+                - chord_type: "7"
+              - note
+                - pitch > note_letter: "A"
+                - rhythm: "2"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "d"
+            - nte_or_chrd > note_cstrct
+              - chord_symbol > note_letter: "G"
+              - note > pitch > note_letter: "B"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "A"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+          - generic_bar_line > bar_line: "|"
+        - bar
+          - music_content > beam
+            - nte_or_chrd > note_cstrct
+              - chord_symbol > note_letter: "C"
+              - note
+                - pitch > note_letter: "E"
+                - rhythm: "2"
+            - nte_or_chrd > note_cstrct
+              - chord_symbol
+                - note_letter: "D"
+                - chord_type: "7"
+              - note > pitch > note_letter: "F"
+            - nte_or_chrd > note_cstrct
+              - chord_symbol > note_letter: "G"
+              - note
+                - pitch > note_letter: "G"
+                - rhythm: "2"
+          - generic_bar_line > end_of_repeated_section: ":|"
+      - COMMENTLINE > TEXTLINE > TEXT: "changes of meter, using inline fields"
+      - MUSIC_CODE
+        - bar
+          - music_content > body_inline_info > tempo > TEXT: "Slows"
+          - music_content > body_inline_info > meter > TEXT: "4/4"
+          - music_content > body_inline_info > unit_note_length > TEXT: "1/4"
+          - music_content > body_inline_info > parts_line > part_line_content > section_name: "C"
+          - music_content > nte_or_chrd > note_cstrct
+            - chord_symbol > note_letter: "G"
+            - note
+              - pitch > note_letter: "d"
+              - rhythm: "2"
+          - generic_bar_line > bar_line: "|"
+        - bar
+          - music_content > beam
+            - nte_or_chrd > note_cstrct
+              - chord_symbol > note_letter: "C"
+              - note
+                - pitch > note_letter: "e"
+                - rhythm: "2"
+            - nte_or_chrd > note_cstrct
+              - chord_symbol > note_letter: "G"
+              - note
+                - pitch > note_letter: "d"
+                - rhythm: "2"
+          - generic_bar_line > bar_line: "|"
+        - bar
+          - music_content > beam
+            - nte_or_chrd > note_cstrct > note
+              - pitch > note_letter: "B"
+              - rhythm: "2"
+            - nte_or_chrd > note_cstrct > note
+              - pitch > note_letter: "d"
+              - rhythm: "2"
+          - generic_bar_line > bar_line: "|"
+        - bar
+          - music_content > beam
+            - nte_or_chrd > note_cstrct
+              - chord_symbol
+                - note_letter: "E"
+                - chord_type: "m"
+              - note > pitch > note_letter: "g"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "f"
+            - nte_or_chrd > note_cstrct
+              - chord_symbol
+                - note_letter: "A"
+                - chord_type: "7"
+              - note
+                - pitch > note_letter: "e"
+                - rhythm: "2"
+          - generic_bar_line > bar_line: "|"
+        - bar
+          - music_content > beam
+            - nte_or_chrd > note_cstrct
+              - chord_symbol
+                - note_letter: "D"
+                - chord_type: "7"
+              - note
+                - pitch > note_letter: "d"
+                - rhythm: "2"
+            - nte_or_chrd > note_cstrct
+              - chord_symbol > note_letter: "G"
+              - note
+                - pitch > note_letter: "d"
+                - rhythm: "2"
+          - generic_bar_line > bar_line: "|"
+      - MUSIC_CODE
+        - bar
+          - music_content > beam
+            - nte_or_chrd > note_cstrct
+              - chord_symbol > note_letter: "C"
+              - note
+                - pitch > note_letter: "e"
+                - rhythm: "2"
+            - nte_or_chrd > note_cstrct
+              - chord_symbol > note_letter: "G"
+              - note
+                - pitch > note_letter: "d"
+                - rhythm: "2"
+          - generic_bar_line > bar_line: "|"
+        - bar
+          - music_content > body_inline_info > meter > TEXT: "3/8"
+          - music_content > body_inline_info > unit_note_length > TEXT: "1/8"
+          - music_content > beam
+            - nte_or_chrd > note_cstrct
+              - chord_symbol > note_letter: "G"
+              - note
+                - pitch > note_letter: "B"
+                - rhythm: "2"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "d"
+          - generic_bar_line > bar_line: "|"
+        - bar
+          - music_content > body_inline_info > meter > TEXT: "6/8"
+          - music_content > beam
+            - nte_or_chrd > note_cstrct
+              - chord_symbol > note_letter: "C"
+              - note > pitch > note_letter: "g"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "f"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "e"
+            - nte_or_chrd > note_cstrct
+              - chord_symbol
+                - note_letter: "D"
+                - chord_type: "7"
+              - note
+                - pitch > note_letter: "d"
+                - rhythm: "2"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "c"
+          - generic_bar_line > bar_line: "|"
+      - MUSIC_CODE
+        - bar
+          - music_content > beam
+            - nte_or_chrd > note_cstrct
+              - chord_symbol > note_letter: "G"
+              - note
+                - pitch > note_letter: "B"
+                - rhythm: "2"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "B"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "B"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "c"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "d"
+          - generic_bar_line > bar_line: "|"
+        - bar
+          - music_content > beam
+            - nte_or_chrd > note_cstrct
+              - chord_symbol > note_letter: "C"
+              - note
+                - pitch > note_letter: "e"
+                - rhythm: "2"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "e"
+            - nte_or_chrd > note_cstrct
+              - chord_symbol > note_letter: "G"
+              - note > pitch > note_letter: "d"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "B"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+          - generic_bar_line > bar_line: "|"
+        - bar
+          - music_content > beam
+            - nte_or_chrd > note_cstrct
+              - chord_symbol
+                - note_letter: "D"
+                - chord_type: "7"
+              - note
+                - pitch > note_letter: "A"
+                - rhythm: "2"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "d"
+            - nte_or_chrd > note_cstrct
+              - chord_symbol > note_letter: "G"
+              - note > pitch > note_letter: "B"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "A"
+            - nte_or_chrd > note_cstrct > note > pitch > note_letter: "G"
+          - generic_bar_line > bar_line: "|"
+        - bar
+          - music_content > beam
+            - nte_or_chrd > note_cstrct
+              - chord_symbol > note_letter: "C"
+              - note
+                - pitch > note_letter: "E"
+                - rhythm: "2"
+            - nte_or_chrd > note_cstrct
+              - chord_symbol
+                - note_letter: "D"
+                - chord_type: "7"
+              - note > pitch > note_letter: "F"
+            - nte_or_chrd > note_cstrct
+              - chord_symbol > note_letter: "G"
+              - note
+                - pitch > note_letter: "G"
+                - rhythm: "2"
+          - generic_bar_line > end_of_repeated_section: ":|"
+  - EOI: ""
