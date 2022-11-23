@@ -1,0 +1,13 @@
+WHITESPACE = _{ " "+ }
+newline = _{ "\r\n" | "\n" }
+number = { "-"? ~ (ASCII_DIGIT | ".")+ }
+string = { (!"'" ~ ASCII)* }
+
+field = ${  number | "'" ~ string ~ "'" }
+record = { field ~ ("," ~ field)* | ""}
+file = { SOI ~ pitch* ~ newline? ~ EOI }
+
+note_letter = { ('a'..'g') | 'A'..'G' }
+octave = { ( "'" | ",")+ }
+alteration = { "="| "_" | "^" |"^^" |"__"|"♭"| "♮"| "♯"|"𝄫"| "𝄪"}
+pitch = { alteration ? ~ note_letter ~ octave ? }

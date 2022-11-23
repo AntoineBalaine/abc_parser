@@ -1,4 +1,4 @@
-mod csv_parse;
+mod abc_parse;
 use clap::Parser;
 extern crate pest;
 
@@ -12,6 +12,6 @@ struct Args {
 fn main() {
     let args = Args::parse();
     let content = std::fs::read_to_string(&args.path).expect("could not read file");
-    let myresult = csv_parse::parse_csv(&content[..]);
+    let myresult = abc_parse::parse_abc(&content[..]);
     println!("{:?}", myresult)
 }
