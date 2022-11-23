@@ -10,3 +10,4 @@ pest = "2.0"
 pest_derive = "2.0"
 clap = { version= "4.0.18", features= ["derive"] }
 pest_consume_macros = "1.1.0"
+pest_consume = "1.1.3"
