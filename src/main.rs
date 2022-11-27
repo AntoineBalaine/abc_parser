@@ -1,4 +1,5 @@
 mod pitch;
+mod serializer;
 use clap::Parser;
 
 /// Simple program to greet a person
