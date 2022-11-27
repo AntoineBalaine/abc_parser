@@ -1,4 +1,3 @@
-mod pitch;
 mod serializer;
 use clap::Parser;
 
