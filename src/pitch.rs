@@ -13,13 +13,13 @@ use crate::serializer::Span;
 
 #[derive(Debug, Eq, PartialEq)]
 pub struct Pitch<'a> {
-    pub alteration: Option<Span<'a>>,
-    pub note_letter: Span<'a>,
-    pub octave: Option<Vec<Span<'a>>>,
+    pub alteration: Option<LocatedSpan<&'a str>>,
+    pub note_letter: LocatedSpan<&'a str>,
+    pub octave: Option<Vec<LocatedSpan<&'a str>>>,
 }
 
 impl<'a> Pitch<'a> {
-    fn parse_pitch(input: Span<'a>) -> IResult<Span<'a>, Self> {
+    fn parse_pitch(input: LocatedSpan<&'a str>) -> IResult<LocatedSpan<&'a str>, Self> {
         let parser = tuple((
             opt(Pitch::parse_alteration),
             Pitch::parse_note_letter,
@@ -32,11 +32,15 @@ impl<'a> Pitch<'a> {
         })(input)
     }
 
-    fn parse_octave(input: Span<'a>) -> IResult<Span<'a>, Vec<Span<'a>>> {
+    fn parse_octave(
+        input: LocatedSpan<&'a str>,
+    ) -> IResult<LocatedSpan<&'a str>, Vec<LocatedSpan<&'a str>>> {
         many1(alt((tag("'"), tag(","))))(input)
     }
 
-    fn parse_note_letter(input: Span<'a>) -> IResult<Span<'a>, Span<'a>> {
+    fn parse_note_letter(
+        input: LocatedSpan<&'a str>,
+    ) -> IResult<LocatedSpan<&'a str>, LocatedSpan<&'a str>> {
         alt((
             tag("a"),
             tag("b"),
@@ -55,7 +59,9 @@ impl<'a> Pitch<'a> {
         ))(input)
     }
 
-    fn parse_alteration(input: Span<'a>) -> IResult<Span<'a>, Span<'a>> {
+    fn parse_alteration(
+        input: LocatedSpan<&'a str>,
+    ) -> IResult<LocatedSpan<&'a str>, LocatedSpan<&'a str>> {
         alt((
             tag("="),
             tag("__"),
@@ -73,7 +79,7 @@ impl<'a> Pitch<'a> {
 
 #[test]
 fn test_parse_note_letter() {
-    let input = Span::new("Ablabla");
+    let input = LocatedSpan::new("Ablabla");
     let (tail, matched_letter) = Pitch::parse_note_letter(input).unwrap();
     assert_eq!(matched_letter.location_offset(), 0);
     assert_eq!(matched_letter.location_line(), 1);
@@ -90,7 +96,7 @@ fn test_parse_alteration() {
         ("_B,", "B,", "_"),
     ];
     for test in test_alterations {
-        let (tail, result_alteration) = Pitch::parse_alteration(Span::new(test.0)).unwrap();
+        let (tail, result_alteration) = Pitch::parse_alteration(LocatedSpan::new(test.0)).unwrap();
         assert_eq!(result_alteration.fragment(), &test.2);
         assert_eq!(tail.fragment(), &test.1);
     }
@@ -98,7 +104,11 @@ fn test_parse_alteration() {
 
 #[test]
 fn test_parse_octave() {
-    let test_vec = [(Span::new(",,,"), Span::new(""), vec![Span::new(","); 3])];
+    let test_vec = [(
+        LocatedSpan::new(",,,"),
+        LocatedSpan::new(""),
+        vec![LocatedSpan::new(","); 3],
+    )];
     for test in test_vec {
         let (tail, result_octave) = Pitch::parse_octave(test.0).unwrap();
 
@@ -108,17 +118,17 @@ fn test_parse_octave() {
         assert_eq!(tail.fragment(), test.1.fragment());
     }
 
-    let result_octave = Pitch::parse_octave(Span::new(""));
+    let result_octave = Pitch::parse_octave(LocatedSpan::new(""));
 
     assert_eq!(
         result_octave,
-        Err(Err::Error(Error::new(Span::new(""), ErrorKind::Tag)))
+        Err(Err::Error(Error::new(LocatedSpan::new(""), ErrorKind::Tag)))
     );
 }
 
 #[test]
 fn test_parse_pitch() {
-    let (tail, pitch) = Pitch::parse_pitch(Span::new("^G,")).unwrap();
+    let (tail, pitch) = Pitch::parse_pitch(LocatedSpan::new("^G,")).unwrap();
     assert_eq!(
         SimplifiedPitch::convert_from_Pitch(&pitch),
         SimplifiedPitch {
@@ -127,7 +137,7 @@ fn test_parse_pitch() {
             octave: Some(vec![","]),
         }
     );
-    let (tail, pitch) = Pitch::parse_pitch(Span::new("G")).unwrap();
+    let (tail, pitch) = Pitch::parse_pitch(LocatedSpan::new("G")).unwrap();
     assert_eq!(
         SimplifiedPitch::convert_from_Pitch(&pitch),
         SimplifiedPitch {
