@@ -1,6 +1,8 @@
 use nom::branch::alt;
 use nom::bytes::complete::tag;
+use nom::character::complete::digit0;
 use nom::multi::many1;
+use nom::sequence::pair;
 use nom::{
     combinator::{map, opt},
     error::{Error, ErrorKind},
@@ -9,8 +11,6 @@ use nom::{
 };
 use nom_locate::LocatedSpan;
 
-use crate::serializer::Span;
-
 #[derive(Debug, Eq, PartialEq)]
 pub struct Pitch<'a> {
     pub alteration: Option<LocatedSpan<&'a str>>,
@@ -18,6 +18,33 @@ pub struct Pitch<'a> {
     pub octave: Option<Vec<LocatedSpan<&'a str>>>,
 }
 
+fn prs_rest(input: LocatedSpan<&str>) -> IResult<LocatedSpan<&str>, LocatedSpan<&str>> {
+    alt((tag("z"), tag("x")))(input)
+}
+fn prs_multimeasure_rest(
+    input: LocatedSpan<&str>,
+) -> IResult<LocatedSpan<&str>, (LocatedSpan<&str>, LocatedSpan<&str>)> {
+    pair(alt((tag("Z"), tag("X"))), digit0)(input)
+}
+
+#[test]
+fn test_prs_rest() {
+    let input = LocatedSpan::new("zzzz");
+    let (tail, matched_letter) = prs_rest(input).unwrap();
+    assert_eq!(matched_letter.fragment(), &"z");
+    assert_eq!(tail.fragment(), &"zzz");
+}
+#[test]
+fn test_prs_multimeasure_rest() {
+    let (tail, matched) = prs_multimeasure_rest(LocatedSpan::new("Z123abc")).unwrap();
+    let (z, digits) = matched;
+    assert_eq!(z.fragment(), &"Z");
+    assert_eq!(digits.fragment(), &"123");
+    assert_eq!(tail.fragment(), &"abc");
+}
+
+//rest = { "z" }
+//multimeasure_rest = ${ "Z" ~ ASCII_DIGIT* }
 impl<'a> Pitch<'a> {
     fn parse_pitch(input: LocatedSpan<&'a str>) -> IResult<LocatedSpan<&'a str>, Self> {
         let parser = tuple((
