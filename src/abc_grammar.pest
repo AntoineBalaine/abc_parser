@@ -215,7 +215,7 @@ body_info_line = {(
 ) ~ (NEWLINE | COMMENTLINE) }
 
 body_inline_info = { "[" ~ (
-  instruction       |
+  instruction      |
   key               |
   macros            |
   meter             |
