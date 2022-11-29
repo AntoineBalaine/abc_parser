@@ -1,12 +1,13 @@
 use nom::branch::alt;
-use nom::bytes::complete::tag;
-use nom::character::complete::digit0;
-use nom::multi::many1;
-use nom::sequence::pair;
+use nom::bytes::complete::{tag, take_while, take_while1};
+use nom::character::complete::{char, digit0, digit1};
+use nom::combinator::value;
+use nom::multi::{self, many1};
+use nom::sequence::{delimited, pair};
 use nom::{
     combinator::{map, opt},
     error::{Error, ErrorKind},
-    sequence::tuple,
+    sequence::{separated_pair, tuple},
     Err, IResult,
 };
 use nom_locate::LocatedSpan;
@@ -151,6 +152,120 @@ fn test_parse_octave() {
         result_octave,
         Err(Err::Error(Error::new(LocatedSpan::new(""), ErrorKind::Tag)))
     );
+}
+
+pub fn is_chevron_left(chr: char) -> bool {
+    return chr == '<';
+}
+pub fn is_chevron_right(chr: char) -> bool {
+    return chr == '>';
+}
+fn prs_chevron_left<'a>(input: LocatedSpan<&str>) -> IResult<LocatedSpan<&str>, LocatedSpan<&str>> {
+    take_while1(is_chevron_left)(input)
+}
+#[test]
+fn test_prs_chevron_left() {
+    let (tail, slashes) = prs_chevron_left(LocatedSpan::new("<<abc")).unwrap();
+    assert_eq!(slashes.fragment(), LocatedSpan::new("<<").fragment());
+    assert_eq!(tail.fragment(), LocatedSpan::new("abc").fragment());
+}
+fn prs_chevron_right<'a>(
+    input: LocatedSpan<&str>,
+) -> IResult<LocatedSpan<&str>, LocatedSpan<&str>> {
+    take_while1(is_chevron_right)(input)
+}
+#[test]
+fn test_prs_chevron_right() {
+    let (tail, slashes) = prs_chevron_right(LocatedSpan::new(">>abc")).unwrap();
+    assert_eq!(slashes.fragment(), LocatedSpan::new(">>").fragment());
+    assert_eq!(tail.fragment(), LocatedSpan::new("abc").fragment());
+}
+
+fn prs_broken_rhythm<'a>(
+    input: LocatedSpan<&str>,
+) -> IResult<LocatedSpan<&str>, LocatedSpan<&str>> {
+    alt((prs_chevron_right, prs_chevron_left))(input)
+}
+#[test]
+fn test_prs_broken_rhythm() {
+    let (tail, slashes) = prs_broken_rhythm(LocatedSpan::new(">>abc")).unwrap();
+    assert_eq!(slashes.fragment(), LocatedSpan::new(">>").fragment());
+    assert_eq!(tail.fragment(), LocatedSpan::new("abc").fragment());
+}
+
+pub fn is_slash(chr: char) -> bool {
+    return chr == '/';
+}
+
+fn prs_slash<'a>(
+    input: LocatedSpan<&'a str>,
+) -> IResult<LocatedSpan<&'a str>, LocatedSpan<&'a str>> {
+    take_while1(is_slash)(input)
+}
+#[test]
+fn test_prs_slash() {
+    let (tail, slashes) = prs_slash(LocatedSpan::new("///abc")).unwrap();
+    assert_eq!(slashes.fragment(), LocatedSpan::new("///").fragment());
+    assert_eq!(tail.fragment(), LocatedSpan::new("abc").fragment());
+}
+
+fn prs_digit_slash_digit<'a>(
+    input: LocatedSpan<&'a str>,
+) -> IResult<
+    LocatedSpan<&'a str>,
+    (
+        LocatedSpan<&'a str>,
+        LocatedSpan<&'a str>,
+        LocatedSpan<&'a str>,
+    ),
+> {
+    tuple((digit0, tag("/"), digit1))(input)
+}
+#[test]
+fn test_digit_slash_digit() {
+    let (tail, (optionaldigit, slash, actualdigit)) =
+        prs_digit_slash_digit(LocatedSpan::new("2/6abc")).unwrap();
+    assert_eq!(optionaldigit.fragment(), LocatedSpan::new("2").fragment());
+    assert_eq!(actualdigit.fragment(), LocatedSpan::new("6").fragment());
+
+    let (tail, (optionaldigit, slash, actualdigit)) =
+        prs_digit_slash_digit(LocatedSpan::new("/6abc")).unwrap();
+    assert_eq!(optionaldigit.fragment(), LocatedSpan::new("").fragment());
+    assert_eq!(actualdigit.fragment(), LocatedSpan::new("6").fragment());
+}
+/*
+rhythm_digit_slash = ${ ASCII_DIGIT* ~ "/" ~ ASCII_DIGIT+ }
+rhythm_broken = {  ">"+ | "<"+}
+rhythm = ${ (
+    rhythm_digit_slash |
+    "/"+ |
+    rhythm_broken |
+    ASCII_DIGIT+) }
+ */
+enum Rhythm<'a> {
+    DigitSlashDigit(
+        (
+            LocatedSpan<&'a str>,
+            LocatedSpan<&'a str>,
+            LocatedSpan<&'a str>,
+        ),
+    ),
+    Broken(LocatedSpan<&'a str>),
+    Digits(LocatedSpan<&'a str>),
+    Slashes(LocatedSpan<&'a str>),
+}
+fn prs_rhythm<'a>(input: LocatedSpan<&'a str>) -> IResult<LocatedSpan<&str>, Rhythm<'a>> {
+    alt((
+        map(prs_broken_rhythm, Rhythm::Broken),
+        map(prs_digit_slash_digit, Rhythm::DigitSlashDigit),
+        map(digit1, Rhythm::Digits),
+        map(prs_slash, Rhythm::Slashes),
+    ))(input)
+}
+#[test]
+fn test_parse_rhythm() {
+    let (tail, pitch) = Pitch::parse_pitch(LocatedSpan::new("///")).unwrap();
+    unimplemented!()
 }
 
 #[test]
