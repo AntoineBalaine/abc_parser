@@ -1,13 +1,12 @@
 use nom::branch::alt;
-use nom::bytes::complete::{tag, take_while, take_while1};
-use nom::character::complete::{char, digit0, digit1};
-use nom::combinator::value;
-use nom::multi::{self, many1};
-use nom::sequence::{delimited, pair};
+use nom::bytes::complete::{tag, take_while1};
+use nom::character::complete::{digit0, digit1};
+use nom::multi::many1;
+use nom::sequence::pair;
 use nom::{
     combinator::{map, opt},
     error::{Error, ErrorKind},
-    sequence::{separated_pair, tuple},
+    sequence::tuple,
     Err, IResult,
 };
 use nom_locate::LocatedSpan;
@@ -242,6 +241,7 @@ rhythm = ${ (
     rhythm_broken |
     ASCII_DIGIT+) }
  */
+#[derive(Debug, Eq, PartialEq)]
 enum Rhythm<'a> {
     DigitSlashDigit(
         (
@@ -264,8 +264,24 @@ fn prs_rhythm<'a>(input: LocatedSpan<&'a str>) -> IResult<LocatedSpan<&str>, Rhy
 }
 #[test]
 fn test_parse_rhythm() {
-    let (tail, pitch) = Pitch::parse_pitch(LocatedSpan::new("///")).unwrap();
-    unimplemented!()
+    let (tail, pitch) = prs_rhythm(LocatedSpan::new("///")).unwrap();
+    let tester = Rhythm::Slashes(prs_slash(LocatedSpan::new("///")).unwrap().1);
+    assert_eq!(pitch, tester);
+
+    let (tail, pitch) = prs_rhythm(LocatedSpan::new(">>")).unwrap();
+    let tester = Rhythm::Broken(prs_broken_rhythm(LocatedSpan::new(">>")).unwrap().1);
+    assert_eq!(pitch, tester);
+
+    let (tail, pitch) = prs_rhythm(LocatedSpan::new("12")).unwrap();
+    let parsed = LocatedSpan::new("12");
+    match pitch {
+        Rhythm::Digits(t) => assert_eq!(t, parsed),
+        _ => {}
+    }
+
+    let (tail, pitch) = prs_rhythm(LocatedSpan::new("/12")).unwrap();
+    let tester = Rhythm::DigitSlashDigit(prs_digit_slash_digit(LocatedSpan::new("/12")).unwrap().1);
+    assert_eq!(pitch, tester);
 }
 
 #[test]
