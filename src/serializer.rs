@@ -1,6 +1,8 @@
 extern crate derive_more;
 
-use nom::AsBytes;
+use std::ops::{RangeFrom, RangeTo};
+
+use nom::{branch::alt, bytes::complete::tag, AsBytes, IResult, InputTake, Slice};
 use nom_locate::LocatedSpan;
 use serde::{Deserialize, Serialize};
 
@@ -26,12 +28,17 @@ impl<T: AsBytes + Serialize> From<RemoteSpanDef<T>> for LocatedSpan<T> {
     }
 }
 
-#[derive(serde::Serialize)]
-struct Span<T: AsBytes + Serialize>(#[serde(with = "RemoteSpanDef")] LocatedSpan<T>);
+#[derive(serde::Serialize, Clone, Copy, Debug)]
+pub struct Span<T: AsBytes + Serialize>(#[serde(with = "RemoteSpanDef")] LocatedSpan<T>);
 
+impl<T: AsBytes + Serialize> Span<T> {
+    pub fn new(input: T) -> Self {
+        Span(LocatedSpan::new(input))
+    }
+}
 #[test]
 fn serialize_located_span() {
-    let input = Span(LocatedSpan::new(""));
+    let input = Span::new("");
     let serialized = serde_json::to_string(&input).unwrap();
     let converted = "{\"offset\":0,\"line\":1,\"fragment\":\"\",\"column\":1}";
     assert_eq!(serialized, converted)
