@@ -349,3 +349,65 @@ fn test_parse_simplifiedpitch() {
         }
     )
 }
+
+#[derive(Debug, Eq, PartialEq)]
+enum NoteOrRest<'a> {
+    Pitch(Pitch<'a>),
+    Rest(LocatedSpan<&'a str>),
+}
+#[derive(Debug, Eq, PartialEq)]
+struct Note<'a> {
+    NoteOrRest: NoteOrRest<'a>,
+    Rhythm: Option<Rhythm<'a>>,
+}
+fn prs_note<'a>(input: LocatedSpan<&'a str>) -> IResult<LocatedSpan<&str>, Note<'a>> {
+    map(
+        pair(
+            alt((
+                map(Pitch::parse_pitch, NoteOrRest::Pitch),
+                map(prs_rest, NoteOrRest::Rest),
+            )),
+            opt(prs_rhythm),
+        ),
+        |(NoteOrRest, Rhythm)| Note { NoteOrRest, Rhythm },
+    )(input)
+}
+
+#[test]
+fn test_prs_note() {
+    let (tail, Note { NoteOrRest, Rhythm }) = prs_note(LocatedSpan::new("^G,12/4")).unwrap();
+
+    match NoteOrRest {
+        NoteOrRest::Pitch(t) => {
+            let Pitch {
+                alteration,
+                note_letter,
+                ..
+            } = t;
+            let Pitch {
+                alteration: prs_alt,
+                note_letter: prs_note,
+                ..
+            } = Pitch::parse_pitch(LocatedSpan::new("^G,")).unwrap().1;
+            assert_eq!(alteration.unwrap().fragment(), prs_alt.unwrap().fragment());
+            assert_eq!(note_letter.fragment(), prs_note.fragment());
+        }
+        NoteOrRest::Rest(t) => {
+            assert_eq!(t, prs_rest(LocatedSpan::new("^G,")).unwrap().1)
+        }
+    };
+    if let Some(rhythm) = Rhythm {
+        match rhythm {
+            Rhythm::DigitSlashDigit(rhythm) => {
+                let (optionaldigit, slash, actualdigit) = rhythm;
+                let (tail, parsed) = prs_rhythm(LocatedSpan::new("12/4")).unwrap();
+                if let Rhythm::DigitSlashDigit((prs_opt_dgt, prs_slsh, prs_actual)) = parsed {
+                    assert_eq!(optionaldigit.fragment(), prs_opt_dgt.fragment());
+                    assert_eq!(slash.fragment(), prs_slsh.fragment());
+                    assert_eq!(actualdigit.fragment(), prs_actual.fragment());
+                }
+            }
+            _ => {}
+        }
+    }
+}
