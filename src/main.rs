@@ -1,6 +1,6 @@
-mod pitch;
-mod serializer;
-use clap::Parser;
+pub mod pitch;
+pub mod serializer;
+//use clap::Parser;
 
 /// Simple program to greet a person
 #[derive(clap::Parser, Debug)]
@@ -10,8 +10,8 @@ struct Args {
 }
 
 fn main() {
-    let args = Args::parse();
-    let content = std::fs::read_to_string(&args.path).expect("could not read file");
+    /*     let args = Args::parse();
+    let content = std::fs::read_to_string(&args.path).expect("could not read file"); */
     /*     let successful_parse = AbcParser::parse(Rule::TEXT, "-273.15");
     println!("{:?}\n\n", successful_parse.unwrap());
 

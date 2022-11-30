@@ -1,10 +1,8 @@
 extern crate derive_more;
 
-use std::ops::{RangeFrom, RangeTo};
-
-use nom::{branch::alt, bytes::complete::tag, AsBytes, IResult, InputTake, Slice};
+use nom::AsBytes;
 use nom_locate::LocatedSpan;
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 
 extern crate serde;
 
@@ -36,6 +34,8 @@ impl<T: AsBytes + Serialize> Span<T> {
         Span(LocatedSpan::new(input))
     }
 }
+
+#[cfg(test)]
 #[test]
 fn serialize_located_span() {
     let input = Span::new("");

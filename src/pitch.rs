@@ -5,9 +5,8 @@ use nom::multi::many1;
 use nom::sequence::pair;
 use nom::{
     combinator::{map, opt},
-    error::{Error, ErrorKind},
     sequence::tuple,
-    Err, IResult,
+    IResult,
 };
 use nom_locate::LocatedSpan;
 
@@ -21,7 +20,7 @@ pub struct Pitch<'a> {
 fn prs_rest(input: LocatedSpan<&str>) -> IResult<LocatedSpan<&str>, LocatedSpan<&str>> {
     alt((tag("z"), tag("x")))(input)
 }
-fn prs_multimeasure_rest(
+pub fn prs_multimeasure_rest(
     input: LocatedSpan<&str>,
 ) -> IResult<LocatedSpan<&str>, (LocatedSpan<&str>, LocatedSpan<&str>)> {
     pair(alt((tag("Z"), tag("X"))), digit0)(input)
@@ -129,37 +128,44 @@ fn test_parse_alteration() {
     }
 }
 
-#[test]
-fn test_parse_octave() {
-    let test_vec = [(
-        LocatedSpan::new(",,,"),
-        LocatedSpan::new(""),
-        vec![LocatedSpan::new(","); 3],
-    )];
-    for test in test_vec {
-        let (tail, result_octave) = Pitch::parse_octave(test.0).unwrap();
+#[cfg(test)]
+mod test {
 
-        for (i, result_span) in result_octave.iter().enumerate() {
-            assert_eq!(result_span.fragment(), test.2[i].fragment());
+    use super::*;
+    use nom::error::{Error, ErrorKind};
+    use nom::Err;
+    #[test]
+    fn test_parse_octave() {
+        let test_vec = [(
+            LocatedSpan::new(",,,"),
+            LocatedSpan::new(""),
+            vec![LocatedSpan::new(","); 3],
+        )];
+        for test in test_vec {
+            let (tail, result_octave) = Pitch::parse_octave(test.0).unwrap();
+
+            for (i, result_span) in result_octave.iter().enumerate() {
+                assert_eq!(result_span.fragment(), test.2[i].fragment());
+            }
+            assert_eq!(tail.fragment(), test.1.fragment());
         }
-        assert_eq!(tail.fragment(), test.1.fragment());
+
+        let result_octave = Pitch::parse_octave(LocatedSpan::new(""));
+
+        assert_eq!(
+            result_octave,
+            Err(Err::Error(Error::new(LocatedSpan::new(""), ErrorKind::Tag)))
+        );
     }
-
-    let result_octave = Pitch::parse_octave(LocatedSpan::new(""));
-
-    assert_eq!(
-        result_octave,
-        Err(Err::Error(Error::new(LocatedSpan::new(""), ErrorKind::Tag)))
-    );
 }
 
 pub fn is_chevron_left(chr: char) -> bool {
-    return chr == '<';
+    chr == '<'
 }
 pub fn is_chevron_right(chr: char) -> bool {
-    return chr == '>';
+    chr == '>'
 }
-fn prs_chevron_left<'a>(input: LocatedSpan<&str>) -> IResult<LocatedSpan<&str>, LocatedSpan<&str>> {
+fn prs_chevron_left(input: LocatedSpan<&str>) -> IResult<LocatedSpan<&str>, LocatedSpan<&str>> {
     take_while1(is_chevron_left)(input)
 }
 #[test]
@@ -168,9 +174,7 @@ fn test_prs_chevron_left() {
     assert_eq!(slashes.fragment(), LocatedSpan::new("<<").fragment());
     assert_eq!(tail.fragment(), LocatedSpan::new("abc").fragment());
 }
-fn prs_chevron_right<'a>(
-    input: LocatedSpan<&str>,
-) -> IResult<LocatedSpan<&str>, LocatedSpan<&str>> {
+fn prs_chevron_right(input: LocatedSpan<&str>) -> IResult<LocatedSpan<&str>, LocatedSpan<&str>> {
     take_while1(is_chevron_right)(input)
 }
 #[test]
@@ -180,9 +184,7 @@ fn test_prs_chevron_right() {
     assert_eq!(tail.fragment(), LocatedSpan::new("abc").fragment());
 }
 
-fn prs_broken_rhythm<'a>(
-    input: LocatedSpan<&str>,
-) -> IResult<LocatedSpan<&str>, LocatedSpan<&str>> {
+fn prs_broken_rhythm(input: LocatedSpan<&str>) -> IResult<LocatedSpan<&str>, LocatedSpan<&str>> {
     alt((prs_chevron_right, prs_chevron_left))(input)
 }
 #[test]
@@ -193,12 +195,10 @@ fn test_prs_broken_rhythm() {
 }
 
 pub fn is_slash(chr: char) -> bool {
-    return chr == '/';
+    chr == '/'
 }
 
-fn prs_slash<'a>(
-    input: LocatedSpan<&'a str>,
-) -> IResult<LocatedSpan<&'a str>, LocatedSpan<&'a str>> {
+fn prs_slash(input: LocatedSpan<&str>) -> IResult<LocatedSpan<&str>, LocatedSpan<&str>> {
     take_while1(is_slash)(input)
 }
 #[test]
@@ -208,26 +208,22 @@ fn test_prs_slash() {
     assert_eq!(tail.fragment(), LocatedSpan::new("abc").fragment());
 }
 
-fn prs_digit_slash_digit<'a>(
-    input: LocatedSpan<&'a str>,
-) -> IResult<
+type Truple<'a> = (
     LocatedSpan<&'a str>,
-    (
-        LocatedSpan<&'a str>,
-        LocatedSpan<&'a str>,
-        LocatedSpan<&'a str>,
-    ),
-> {
+    LocatedSpan<&'a str>,
+    LocatedSpan<&'a str>,
+);
+fn prs_digit_slash_digit(input: LocatedSpan<&str>) -> IResult<LocatedSpan<&str>, Truple> {
     tuple((digit0, tag("/"), digit1))(input)
 }
 #[test]
 fn test_digit_slash_digit() {
-    let (tail, (optionaldigit, slash, actualdigit)) =
+    let (_tail, (optionaldigit, _slash, actualdigit)) =
         prs_digit_slash_digit(LocatedSpan::new("2/6abc")).unwrap();
     assert_eq!(optionaldigit.fragment(), LocatedSpan::new("2").fragment());
     assert_eq!(actualdigit.fragment(), LocatedSpan::new("6").fragment());
 
-    let (tail, (optionaldigit, slash, actualdigit)) =
+    let (_tail, (optionaldigit, _slash, actualdigit)) =
         prs_digit_slash_digit(LocatedSpan::new("/6abc")).unwrap();
     assert_eq!(optionaldigit.fragment(), LocatedSpan::new("").fragment());
     assert_eq!(actualdigit.fragment(), LocatedSpan::new("6").fragment());
@@ -242,7 +238,7 @@ rhythm = ${ (
     ASCII_DIGIT+) }
  */
 #[derive(Debug, Eq, PartialEq)]
-enum Rhythm<'a> {
+pub enum Rhythm<'a> {
     DigitSlashDigit(
         (
             LocatedSpan<&'a str>,
@@ -254,7 +250,7 @@ enum Rhythm<'a> {
     Digits(LocatedSpan<&'a str>),
     Slashes(LocatedSpan<&'a str>),
 }
-fn prs_rhythm<'a>(input: LocatedSpan<&'a str>) -> IResult<LocatedSpan<&str>, Rhythm<'a>> {
+pub fn prs_rhythm<'a>(input: LocatedSpan<&'a str>) -> IResult<LocatedSpan<&str>, Rhythm<'a>> {
     alt((
         map(prs_broken_rhythm, Rhythm::Broken),
         map(prs_digit_slash_digit, Rhythm::DigitSlashDigit),
@@ -264,40 +260,40 @@ fn prs_rhythm<'a>(input: LocatedSpan<&'a str>) -> IResult<LocatedSpan<&str>, Rhy
 }
 #[test]
 fn test_parse_rhythm() {
-    let (tail, pitch) = prs_rhythm(LocatedSpan::new("///")).unwrap();
+    let (_tail, pitch) = prs_rhythm(LocatedSpan::new("///")).unwrap();
     let tester = Rhythm::Slashes(prs_slash(LocatedSpan::new("///")).unwrap().1);
     assert_eq!(pitch, tester);
 
-    let (tail, pitch) = prs_rhythm(LocatedSpan::new(">>")).unwrap();
+    let (_tail, pitch) = prs_rhythm(LocatedSpan::new(">>")).unwrap();
     let tester = Rhythm::Broken(prs_broken_rhythm(LocatedSpan::new(">>")).unwrap().1);
     assert_eq!(pitch, tester);
 
-    let (tail, pitch) = prs_rhythm(LocatedSpan::new("12")).unwrap();
+    let (_tail, pitch) = prs_rhythm(LocatedSpan::new("12")).unwrap();
     let parsed = LocatedSpan::new("12");
     match pitch {
         Rhythm::Digits(t) => assert_eq!(t, parsed),
         _ => {}
     }
 
-    let (tail, pitch) = prs_rhythm(LocatedSpan::new("/12")).unwrap();
+    let (_tail, pitch) = prs_rhythm(LocatedSpan::new("/12")).unwrap();
     let tester = Rhythm::DigitSlashDigit(prs_digit_slash_digit(LocatedSpan::new("/12")).unwrap().1);
     assert_eq!(pitch, tester);
 }
 
 #[test]
 fn test_parse_pitch() {
-    let (tail, pitch) = Pitch::parse_pitch(LocatedSpan::new("^G,")).unwrap();
+    let (_tail, pitch) = Pitch::parse_pitch(LocatedSpan::new("^G,")).unwrap();
     assert_eq!(
-        SimplifiedPitch::convert_from_Pitch(&pitch),
+        SimplifiedPitch::convert_from_pitch(&pitch),
         SimplifiedPitch {
             note_letter: "G",
             alteration: Some("^"),
             octave: Some(vec![","]),
         }
     );
-    let (tail, pitch) = Pitch::parse_pitch(LocatedSpan::new("G")).unwrap();
+    let (_tail, pitch) = Pitch::parse_pitch(LocatedSpan::new("G")).unwrap();
     assert_eq!(
-        SimplifiedPitch::convert_from_Pitch(&pitch),
+        SimplifiedPitch::convert_from_pitch(&pitch),
         SimplifiedPitch {
             note_letter: "G",
             alteration: None,
@@ -307,20 +303,20 @@ fn test_parse_pitch() {
 }
 
 #[derive(Debug, Eq, PartialEq)]
-struct SimplifiedPitch<'a> {
+pub struct SimplifiedPitch<'a> {
     pub alteration: Option<&'a str>,
     pub note_letter: &'a str,
     pub octave: Option<Vec<&'a str>>,
 }
 impl<'a> SimplifiedPitch<'a> {
-    fn new_empty() -> Self {
+    pub fn new_empty() -> Self {
         SimplifiedPitch {
             alteration: None,
             note_letter: "",
             octave: None,
         }
     }
-    fn convert_from_Pitch(pitch: &'a Pitch) -> Self {
+    pub fn convert_from_pitch(pitch: &'a Pitch) -> Self {
         let mut simple_pitch = SimplifiedPitch::new_empty();
         match pitch.alteration {
             Some(val) => simple_pitch.alteration = Some(*val.fragment()),
@@ -351,16 +347,16 @@ fn test_parse_simplifiedpitch() {
 }
 
 #[derive(Debug, Eq, PartialEq)]
-enum NoteOrRest<'a> {
+pub enum NoteOrRest<'a> {
     Pitch(Pitch<'a>),
     Rest(LocatedSpan<&'a str>),
 }
 #[derive(Debug, Eq, PartialEq)]
-struct Note<'a> {
-    NoteOrRest: NoteOrRest<'a>,
-    Rhythm: Option<Rhythm<'a>>,
+pub struct Note<'a> {
+    note_or_rest: NoteOrRest<'a>,
+    rhythm: Option<Rhythm<'a>>,
 }
-fn prs_note<'a>(input: LocatedSpan<&'a str>) -> IResult<LocatedSpan<&str>, Note<'a>> {
+pub fn prs_note<'a>(input: LocatedSpan<&'a str>) -> IResult<LocatedSpan<&str>, Note<'a>> {
     map(
         pair(
             alt((
@@ -369,15 +365,24 @@ fn prs_note<'a>(input: LocatedSpan<&'a str>) -> IResult<LocatedSpan<&str>, Note<
             )),
             opt(prs_rhythm),
         ),
-        |(NoteOrRest, Rhythm)| Note { NoteOrRest, Rhythm },
+        |(note_or_rest, rhythm)| Note {
+            note_or_rest,
+            rhythm,
+        },
     )(input)
 }
 
 #[test]
 fn test_prs_note() {
-    let (tail, Note { NoteOrRest, Rhythm }) = prs_note(LocatedSpan::new("^G,12/4")).unwrap();
+    let (
+        _tail,
+        Note {
+            note_or_rest,
+            rhythm,
+        },
+    ) = prs_note(LocatedSpan::new("^G,12/4")).unwrap();
 
-    match NoteOrRest {
+    match note_or_rest {
         NoteOrRest::Pitch(t) => {
             let Pitch {
                 alteration,
@@ -396,11 +401,11 @@ fn test_prs_note() {
             assert_eq!(t, prs_rest(LocatedSpan::new("^G,")).unwrap().1)
         }
     };
-    if let Some(rhythm) = Rhythm {
+    if let Some(rhythm) = rhythm {
         match rhythm {
             Rhythm::DigitSlashDigit(rhythm) => {
                 let (optionaldigit, slash, actualdigit) = rhythm;
-                let (tail, parsed) = prs_rhythm(LocatedSpan::new("12/4")).unwrap();
+                let (_tail, parsed) = prs_rhythm(LocatedSpan::new("12/4")).unwrap();
                 if let Rhythm::DigitSlashDigit((prs_opt_dgt, prs_slsh, prs_actual)) = parsed {
                     assert_eq!(optionaldigit.fragment(), prs_opt_dgt.fragment());
                     assert_eq!(slash.fragment(), prs_slsh.fragment());
