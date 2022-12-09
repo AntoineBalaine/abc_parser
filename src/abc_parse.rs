@@ -11,6 +11,18 @@ pub enum AbcValue<'a> {
     TEXT(&'a str),
 }
 
+#[test]
+fn test_note() {
+    let song = "^a,";
+    let tester = AbcParser::parse(Rule::pitch, &song).unwrap();
+    for pair in tester {
+        let rule = pair.as_rule();
+        let span = pair.as_span();
+        span.as_str();
+        println!("{:?}, {:?}", rule, span)
+    }
+}
+
 pub fn abc_parser(song: &str) -> Result<AbcValue, Error<Rule>> {
     let tune = AbcParser::parse(Rule::TEXTLINE, &song)
         .expect("couldn't create the parser")
