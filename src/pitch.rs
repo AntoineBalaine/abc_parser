@@ -374,7 +374,6 @@ pub fn prs_note<'a>(input: LocatedSpan<&'a str>) -> IResult<LocatedSpan<&str>, N
 
 #[test]
 fn test_prs_note() {
-    //tbd add tests for other structures
     let (
         _tail,
         Note {
